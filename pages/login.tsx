@@ -20,7 +20,7 @@ return (
     <div className='lg:w-1/2 p-4'>
         <div className='mx-auto flex flex-col gap-8 lg:w-1/2'>
         <div>
-            <h1 className='text-2xl font-medium'>Get Started Now</h1>
+            <h1 className='text-2xl font-medium'>Get Master Now</h1>
             <p className='text-sm text-slate-500'>Enter your credentials to access your account.</p>
         </div>
         <div className='flex flex-col gap-4'>
