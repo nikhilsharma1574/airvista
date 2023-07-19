@@ -1,50 +1,213 @@
-// import React from 'react'
-// import Arrow from "../assests/arrow.png";
-// import Rocket from "../assests/rocket.png";
-// import Star from "../assests/star.png";
-// import Target from "../assests/target.png";
-import Image from "next/image";
-import landing_logo from '../assets/landing_page_logo.png'
-// import Arrow from "/arrow.svg";
-// import Rocket from "/rocket.svg";
-// import Star from "/star.svg";
-// import Target from "/target.svg";
-import { useNavigate } from "react-router-dom";
+import React from "react"
+import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import {airports} from "../airports.js"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from "@/components/ui/command"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
+import { cn } from "@/lib/utils"
 
 const Landing = () => {
 
-    // const navigate = useNavigate();
+    // console.log(airports);
+
+    const airlines = [
+        {
+            title: "Indigo",
+            value: "indigo",
+            logo: "/assets/indigo.svg",
+        },
+        {
+            title: "Air India",
+            value: "airindia",
+            logo: "/assets/air_india.svg",
+        },
+        {
+            title: "Vistara",
+            value: "vistara",
+            logo: "/assets/vistara.svg",
+        },
+        {
+            title: "Akasa Air",
+            value: "asakaair",
+            logo: "/assets/akasa.svg",
+        },
+    ];
 
 
+    const [open, setOpen] = React.useState(false)
+    const [open2, setOpen2] = React.useState(false)
+    const [fromCity, setfromCity] = React.useState("");
+    const [toCity, setToCity] = React.useState("");
+
+    console.log(fromCity, toCity)
     return (
         <div className="bg-slate-100">
-        <main className="p-4 md:px-16 lg:max-w-6xl lg:mx-auto text-left w-full h-screen flex justify-center items-center">
-            <div className="flex flex-col gap-4 relative">
-                <div className="flex items-center w-full justify-center">
-                <Image src={landing_logo} height={400} width={400} alt="image"/>
-                </div>
-                <h1 className="text-4xl lg:text-6xl lg:leading-tight font-bold md:text-center">Book your flight today, <span className="text-lime-500"> fly </span> away <span className="text-lime-500"><br className="md:hidden"/>tomorrow</span></h1>
-                <p className="text-sm lg:text-base lg:max-w-3xl lg:mx-auto text-slate-500 md:text-center">StreamlineRecruit is here to revolutionize your hiring process and empower your HR team with an efficient online recruitment solution.</p>
-                <div className="grid grid-cols-3 lg:grid-cols-5 rounded-lg">
-                    <div className="flex gap-2 border-b md:border-none items-center bg-white rounded-t-lg md:rounded-l-lg md:rounded-t-none p-4 col-span-3 md:col-span-1 lg:col-span-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#64748b" className="w-6 h-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" />
-                    </svg>
-                    <input placeholder="Job Tile" className="w-full text-sm outline-none"/>
-                    </div>
-                    <div className="flex gap-2 md:border-l items-center bg-white rounded-b-lg md:rounded-r-lg md:rounded-b-none p-4 col-span-3 md:col-span-1 lg:col-span-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#64748b" className="w-6 h-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                    </svg>
-                    <input placeholder="Location" className="w-full text-sm outline-none"/>
-                    </div>
-                    <div className="col-span-3 md:col-span-1 lg:col-span-1 mt-4 md:mt-0">
-                        <button className="p-4 w-full md:h-full text-sm bg-lime-500 hover:bg-lime-600 transition-all duration-300 rounded cursor-pointer text-white font-medium">Search</button>
-                    </div>
+        <main className="p-4 md:px-16 lg:max-w-6xl lg:mx-auto w-full h-screen flex ">
+            <div className="w-full">
+                <h1 className="text-3xl font-semibold">Admin Dashboard</h1>
+                <div className="w-full h-96 flex items-center justify-center flex-col gap-2">
+                    <p className="text-slate-500 text-sm">No Flights Added</p>
+                    <Dialog>
+                        <DialogTrigger>
+                            <Button className="bg-lime-500 hover:bg-lime-600">Add Flights</Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Add Flight Deatails</DialogTitle>
+                                <DialogDescription>
+                                    <div className="w-full h-full grid grid-cols-1 gap-4">
+                                        {/* airline */}
+                                        <Select>
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Select Airline" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {
+                                                    airlines.map((airline, idx) => (
+                                                        <SelectItem key={idx} value={airline.value} > 
+                                                            <div className="flex gap-2 items-center">
+                                                                <Image src={airline.logo} alt={airline.title} width={44} height={44}/> {airline.title}
+                                                            </div>
+                                                        </SelectItem>
+                                                    ))
+                                                }
+                                            </SelectContent>
+                                        </Select>
+                                        {/* flight number */}
+                                        <div className="grid w-full max-w-sm items-center gap-1.5">
+                                            <Label htmlFor="flight_num" className="text-left">Flight Number</Label>
+                                            <Input type="text" id="flight_num" placeholder="Number" />
+                                        </div>
+                                        {/* from */}
+                                        <Label htmlFor="from_city" className="text-left mb-0">From</Label>
+                                        <Popover open={open} onOpenChange={setOpen}>
+                                            <PopoverTrigger asChild>
+                                                <Button
+                                                variant="outline"
+                                                role="combobox"
+                                                aria-expanded={open}
+                                                className="w-full justify-between"
+                                                >
+                                                {fromCity
+                                                    ? airports.find((airport) => airport.city === fromCity.replace(/\b\w/g, x => x.toUpperCase()))?.city
+                                                    : "Select City"}
+                                                <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-full p-0">
+                                                <Command id="from_city">
+                                                    <CommandInput placeholder="Search City..." className="h-9" />
+                                                    <CommandEmpty>No city found.</CommandEmpty>
+                                                    <CommandGroup className="h-56  overflow-y-scroll">
+                                                        {airports.map((airport) => (
+                                                        <CommandItem
+                                                            key={airport.code}
+                                                            onSelect={(currentValue) => {
+                                                                setfromCity(currentValue === fromCity ? "" : currentValue)
+                                                                setOpen(false)
+                                                            }}
+                                                        >
+                                                            <p>
+                                                                {airport.city}
+                                                            </p>
+                                                            <CheckIcon
+                                                            className={cn(
+                                                                "ml-auto h-4 w-4",
+                                                                fromCity === airport.city ? "opacity-100" : "opacity-0"
+                                                            )}
+                                                            />
+                                                        </CommandItem>
+                                                        ))}
+                                                    </CommandGroup>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
+                                        {/* to city */}
+                                        <Label htmlFor="to_city" className="text-left mb-0">To</Label>
+                                        <Popover open={open2} onOpenChange={setOpen2}>
+                                            <PopoverTrigger asChild>
+                                                <Button
+                                                variant="outline"
+                                                role="combobox"
+                                                aria-expanded={open}
+                                                className="w-full justify-between"
+                                                >
+                                                {toCity
+                                                    ? airports.find((airport) => airport.city === toCity.replace(/\b\w/g, x => x.toUpperCase()))?.city
+                                                    : "Select City"}
+                                                <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-full p-0">
+                                                <Command id="to_city">
+                                                    <CommandInput placeholder="Search City..." className="h-9" />
+                                                    <CommandEmpty>No city found.</CommandEmpty>
+                                                    <CommandGroup >
+                                                        <div className="h-56 overflow-y-scroll">
+                                                            {airports.map((airport) => (
+                                                            <CommandItem
+                                                                className={`${airport.city === fromCity.replace(/\b\w/g, x => x.toUpperCase()) ? "hidden" : "block"}`}
+                                                                key={airport.code}
+                                                                onSelect={(currentValue) => {
+                                                                    setToCity(currentValue === toCity ? "" : currentValue)
+                                                                    setOpen2(false)
+                                                                }}
+                                                            >
+                                                                <p>
+                                                                    {airport.city}
+                                                                </p>
+                                                                <CheckIcon
+                                                                className={cn(
+                                                                    "ml-auto h-4 w-4",
+                                                                    toCity === airport.city ? "opacity-100" : "opacity-0"
+                                                                )}
+                                                                />
+                                                            </CommandItem>
+                                                            ))}
+                                                        </div>
+                                                    </CommandGroup>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </DialogDescription>
+                            </DialogHeader>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             </div>
-            
         </main>
         </div>
     )
