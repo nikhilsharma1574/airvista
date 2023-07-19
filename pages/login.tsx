@@ -5,6 +5,10 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const Login = () => {
 
+    const adminCred = {
+        email : "nikhilsharma1574@gmail.com",
+        password: "123456789",
+    }
 
 return (
     <main className='w-full h-screen flex justify-center items-center'>
