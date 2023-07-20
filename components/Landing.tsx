@@ -107,6 +107,8 @@ const Landing = () => {
             const toAirport = airports.find((airport) => airport.city === toCity.replace(/\b\w/g, x => x.toUpperCase()))
             const selectedFlightLogo = airlines.find((airline) => airline.title === airlineName)?.logo
             setDoc(doc(db, "flights", FlightNo), {
+                fromCity: fromCity,
+                toCity: toCity,
                 airlineName: airlineName,
                 flightNumber: FlightNo, 
                 time: time, 
@@ -134,8 +136,8 @@ const Landing = () => {
     },[]);
 
     return (
-        <div className="bg-slate-100">
-        <main className="p-4 md:px-16 lg:max-w-6xl lg:mx-auto w-full h-full flex ">
+        <div className="bg-slate-100 h-screen">
+        <main className="p-4 md:px-16 lg:max-w-6xl lg:mx-auto w-full  flex ">
             <div className="w-full">
                 <h1 className="text-3xl font-semibold mb-4">Admin Dashboard</h1>
                 <Dialog>
@@ -269,12 +271,12 @@ const Landing = () => {
                         </DialogHeader>
                     </DialogContent>
                 </Dialog>
-                <div className="w-full h-full flex items-center justify-center flex-col gap-2">
+                <div className="w-full flex items-center justify-center flex-col gap-2">
                     {
                         flights.length === 0 ?
                         <p className="text-slate-500 text-sm">No Flights Added</p>
                         :
-                        <div className="w-full h-full mt-8">
+                        <div className="w-full mt-8">
                             <div className="mb-8">
                                 <div className="flex w-full max-w-lg items-center space-x-2">
                                     <Input onChange={handleChangeSearch} type="email" placeholder="Enter Flight No " />
@@ -322,7 +324,7 @@ const Landing = () => {
                                 :
                                 <>
                                     {
-                                         filteredflights.map((flight, idx) => (
+                                        filteredflights.map((flight, idx) => (
                                             <div key={idx} className={`w-full bg-slate-300/40 p-4 grid grid-cols-1 md:grid-cols-5 place-items-center rounded-lg shadow-md mb-4`}>
                                                 <div className="flex items-center gap-2 md:col-span-1">
                                                     {/* @ts-ignore */}

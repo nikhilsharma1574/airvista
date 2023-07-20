@@ -30,7 +30,6 @@ export default function Home() {
     <main className={`flex${inter.className}`}>
         <Header/>
         <Landing/>
-        <Footer/>
     </main>
   )
 }
