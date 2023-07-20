@@ -13,6 +13,7 @@
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
+    "aos": "^2.3.4",
     "autoprefixer": "10.4.14",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
@@ -21,6 +22,7 @@
     "firebase": "^10.0.0",
     "lucide-react": "^0.261.0",
     "next": "13.4.10",
+    "next-optimized-images": "^2.6.2",
     "postcss": "8.4.26",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -28,6 +30,8 @@
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.6",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "typewriter-effect": "^2.20.1",
+    "webp-loader": "^0.6.0"
   }
 }

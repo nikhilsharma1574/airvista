@@ -6,7 +6,7 @@ import Footer from '@/components/Footer'
 const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
   return (
-    <main className={`flex${inter.className}`}>
+    <main className={`flex${inter.className}`}>  
         <Header/>
         <Landing/>
         <Footer/>
