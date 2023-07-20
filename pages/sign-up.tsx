@@ -4,6 +4,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { createUserWithEmailAndPassword, updateProfile  } from "firebase/auth";
 import {auth, db} from "../firebase";
 import { doc, setDoc } from "firebase/firestore"; 
+import Link from 'next/link';
 
 const SignUp = () => {
 
@@ -70,15 +71,15 @@ const SignUp = () => {
         <main className='w-full h-screen flex justify-center items-center'>
             <div className='hidden w-1/2 h-full bg-white text-black lg:flex lg:flex-col lg:px-16 justify-center'>
                 <div className="relative">
-                    {/* <img className="w-20 absolute -bottom-24 right-0" src={Rocket} alt={"Arrow"}/> */}
-                    {/* <img className="w-20 absolute md:-top-60 md:left-32" src={Star} alt={"Rocket"}/> */}
-                    {/* <img className="w-20 absolute md:-top-24 rotate-180 md:right-20" src={Arrow} alt={"Star"}/> */}
-                    {/* <img className="w-20 absolute md:-bottom-44 md:left-10" src={Target} alt={"Target"}/> */}
-                    <h1 className='text-4xl font-semibold'>Welcome to{" "} 
-                        <span className=" h-fit w-fit bg-[url('/underline.svg')] bg-bottom bg-no-repeat">
-                        Streamline<span className="text-[#5cc400]">Recruit</span>
-                        </span>! Your Ultimate Online Recruitment Solution</h1>
-                    <p className='text-slate-500 text-justify mt-4 text-base'>Are you tired of sifting through countless resumes, conducting endless interviews, and struggling to find the perfect candidate for your organization? Look no further! StreamlineRecruit is here to revolutionize your hiring process and empower your HR team with an efficient online recruitment solution.</p>
+                <h1 className='text-4xl font-semibold'>Welcome to{" "} 
+                    <span className=" h-fit w-fit bg-[url('/underline.svg')] bg-bottom bg-no-repeat">
+                    AIR<span className="text-lime-500"> VISTA</span>
+                    </span>! Your Ultimate Online Flight Ticket Booking</h1>
+                    <p className='text-slate-500 text-justify mt-4 text-base'>Enter your travel information, such as your departure and arrival cities, dates of travel, and number of passengers.
+Select your preferred airline and class of travel.
+Compare prices and select the flight that best meets your needs.
+Enter your contact information and credit card details to complete your booking.
+That's it! You've just booked your flight with our website. We hope you enjoy your trip!</p>                    
                 </div>
             </div>
             <div className='lg:w-1/2 p-4'>
@@ -103,7 +104,9 @@ const SignUp = () => {
                         <div>
                             <button onClick={handleSignUp} className="w-full p-4 text-sm bg-lime-500 hover:bg-lime-600 transition-all duration-300 rounded cursor-pointer text-white font-medium">Sign Up</button>
                         </div>
-                        <h1 className='text-center'>Already have an account?<span className='text-lime-500 cursor-pointer hover:underline'> Login</span> </h1>
+                        <Link href='/login'>
+                            <h1 className='text-center'>Already have an account?<span className='text-lime-500 cursor-pointer hover:underline'> Login</span> </h1>
+                        </Link>
                     </form>
                 </div>
             </div>
