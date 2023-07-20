@@ -12,7 +12,7 @@ import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
 import { cn } from "@/lib/utils"
 import { useRef } from "react";
 import {db} from '../firebase.js'
-import { collection, doc, getDocs, setDoc, query} from "firebase/firestore"; 
+import { collection, doc, getDocs, setDoc, query, onSnapshot} from "firebase/firestore"; 
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast";
 
@@ -107,8 +107,8 @@ const Landing = () => {
             const toAirport = airports.find((airport) => airport.city === toCity.replace(/\b\w/g, x => x.toUpperCase()))
             const selectedFlightLogo = airlines.find((airline) => airline.title === airlineName)?.logo
             setDoc(doc(db, "flights", FlightNo), {
-                fromCity: fromCity,
-                toCity: toCity,
+                fromCity: fromCity.replace(/\b\w/g, x => x.toUpperCase()),
+                toCity: toCity.replace(/\b\w/g, x => x.toUpperCase()),
                 airlineName: airlineName,
                 flightNumber: FlightNo, 
                 time: time, 
@@ -123,20 +123,20 @@ const Landing = () => {
     }
 
     React.useEffect(() => {
-        const genRandomKey = async () => {
-            let arr:any = [];
-            const q = query(collection(db, "flights"));
-            const querySnapshot = await getDocs(q);
-            querySnapshot.forEach((doc) => {
-                arr.push({ id: doc.id, ...doc.data() });
-            });
-            setFlights(arr)
-        };        
-        genRandomKey();
+        const unsub = onSnapshot(
+            query(collection(db, "flights")),
+            (collectionRef) => {
+                let arr:any = [];
+                collectionRef.forEach((doc) => {
+                    arr.push({ ...doc.data(), id: doc.id });
+                });
+                setFlights(arr)
+            }
+        );
     },[]);
 
     return (
-        <div className="bg-slate-100 h-screen">
+        <div className="bg-slate-100 h-full">
         <main className="p-4 md:px-16 lg:max-w-6xl lg:mx-auto w-full  flex ">
             <div className="w-full">
                 <h1 className="text-3xl font-semibold mb-4">Admin Dashboard</h1>
