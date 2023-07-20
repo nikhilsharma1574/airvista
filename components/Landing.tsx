@@ -2,43 +2,17 @@ import React from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import {airports} from "../airports.js"
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+import {Dialog,DialogContent,DialogDescription,DialogHeader,DialogTitle,DialogTrigger,} from "@/components/ui/dialog";
+import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue,} from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-} from "@/components/ui/command"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
+import {Command,CommandEmpty,CommandGroup,CommandInput,CommandItem,CommandList,} from "@/components/ui/command"
+import {Popover,PopoverContent,PopoverTrigger,} from "@/components/ui/popover"
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
 import { cn } from "@/lib/utils"
+import { useRef } from "react";
 
 const Landing = () => {
-
-    // console.log(airports);
-
     const airlines = [
         {
             title: "Indigo",
@@ -61,14 +35,18 @@ const Landing = () => {
             logo: "/assets/akasa.svg",
         },
     ];
-
-
+    // const handlePrintValue = () => {
+    //     if (flightNumRef.current) {
+    //         const inputValue = flightNumRef.current.value;
+    //         console.log(inputValue);
+    //     }
+    // };
     const [open, setOpen] = React.useState(false)
     const [open2, setOpen2] = React.useState(false)
     const [fromCity, setfromCity] = React.useState("");
     const [toCity, setToCity] = React.useState("");
-
-    console.log(fromCity, toCity)
+    const flightNumRef = useRef(null);
+    console.log(fromCity, toCity);
     return (
         <div className="bg-slate-100">
         <main className="p-4 md:px-16 lg:max-w-6xl lg:mx-auto w-full h-screen flex ">
@@ -84,7 +62,7 @@ const Landing = () => {
                             <DialogHeader>
                                 <DialogTitle>Add Flight Deatails</DialogTitle>
                                 <DialogDescription>
-                                    <div className="w-full h-full grid grid-cols-1 gap-4">
+                                    <div className="w-full h-full grid grid-cols-1 gap-4 mt-4">
                                         {/* airline */}
                                         <Select>
                                             <SelectTrigger className="w-full">
@@ -105,8 +83,12 @@ const Landing = () => {
                                         {/* flight number */}
                                         <div className="grid w-full max-w-sm items-center gap-1.5">
                                             <Label htmlFor="flight_num" className="text-left">Flight Number</Label>
-                                            <Input type="text" id="flight_num" placeholder="Number" />
+                                            <Input type="text" id="flight_num" placeholder="Number"/>
                                         </div>
+                                        {/* <div className="grid w-full max-w-sm items-center gap-1.5"> */}
+                                            {/* <label htmlFor="flight_num" className="text-left">Flight Number</label> */}
+                                            {/* <Input type="text" id="flight_num" placeholder="Number" ref={flightNumRef} onChange={handlePrintValue} /> */}
+                                        {/* </div> */}
                                         {/* from */}
                                         <Label htmlFor="from_city" className="text-left mb-0">From</Label>
                                         <Popover open={open} onOpenChange={setOpen}>
@@ -167,6 +149,7 @@ const Landing = () => {
                                                 <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                 </Button>
                                             </PopoverTrigger>
+                                            <Button className="bg-lime-500 hover:bg-lime-600">+ Add</Button>
                                             <PopoverContent className="w-full p-0">
                                                 <Command id="to_city">
                                                     <CommandInput placeholder="Search City..." className="h-9" />
@@ -206,6 +189,49 @@ const Landing = () => {
                             </DialogHeader>
                         </DialogContent>
                     </Dialog>
+                    {/* data table */}
+                    
+<div className="relative overflow-x-auto">
+    <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" className="px-6 py-3">
+                    Service provider
+                </th>
+                <th scope="col" className="px-6 py-3">
+                    From
+                </th>
+                <th scope="col" className="px-6 py-3">
+                    to
+                </th>
+                <th scope="col" className="px-6 py-3">
+                    Date
+                </th><th scope="col" className="px-6 py-3">
+                    Price
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                AIRLINE.LOGO AIRLINE.TITLE
+                </th>
+                <td className="px-6 py-4">
+                    Chennai
+                </td>
+                <td className="px-6 py-4">
+                    Mumbai
+                </td>
+                <td className="px-6 py-4">
+                    02-04-2023
+                </td><td className="px-6 py-4">
+                    4565
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
                 </div>
             </div>
         </main>
