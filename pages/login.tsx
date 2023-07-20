@@ -14,11 +14,7 @@ return (
             <span className=" h-fit w-fit bg-[url('/underline.svg')] bg-bottom bg-no-repeat">
             AIR<span className="text-lime-500"> VISTA</span>
             </span>! Your Ultimate Online Flight Ticket Booking</h1>
-        <p className='text-slate-500 text-justify mt-4 text-base'>Enter your travel information, such as your departure and arrival cities, dates of travel, and number of passengers.
-Select your preferred airline and class of travel.
-Compare prices and select the flight that best meets your needs.
-Enter your contact information and credit card details to complete your booking.
-That's it! You've just booked your flight with our website. We hope you enjoy your trip!</p>
+        <p className='text-slate-500 text-justify mt-4 text-base'>Enter your travel information, such as your departure and arrival cities, dates of travel, and number of passengers.Select your preferred airline and class of travel.Compare prices and select the flight that best meets your needs.Enter your contact information and credit card details to complete your booking.That's it! You've just booked your flight with our website. We hope you enjoy your trip!</p>
         </div>
     </div>
     <div className='lg:w-1/2 p-4'>
@@ -35,7 +31,9 @@ That's it! You've just booked your flight with our website. We hope you enjoy yo
             <div className='flex flex-col gap-2'>
             <div className='w-full flex justify-between items-center'>
                 <h1 className=''>Password</h1>
-                <h1 className='text-lime-500 cursor-pointer hover:underline text-sm'>Forgot Password?</h1>
+                {/* <Link href='./forgot'> */}
+                    {/* <h1 className='text-lime-500 cursor-pointer hover:underline text-sm'>Forgot Password?</h1> */}
+                {/* </Link> */}
             </div>
             <input type='password' className='w-full p-4 text-slate-500 outline-none border border-slate-400 rounded' placeholder='password'/>
             </div>
@@ -44,12 +42,6 @@ That's it! You've just booked your flight with our website. We hope you enjoy yo
             </div>
             <div className='text-center text-sm'>
             <p>OR</p>
-            </div>
-            <div>
-            <button className='border border-slate-300 p-4 rounded flex gap-4 w-full justify-center items-center text-sm transition-all duration-300 hover:bg-slate-300/10'>
-                {/* <img className='w-6' src={Google} alt={"google"}/> */}
-                Login with Google
-            </button>
             </div>
             <Link href='./sign-up'>
                 <h1 className='text-center'>Don&apos;t have an account?<span className='text-lime-500 cursor-pointer hover:underline'> Sign up</span> </h1>

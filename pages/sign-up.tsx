@@ -5,6 +5,7 @@ import { createUserWithEmailAndPassword, updateProfile  } from "firebase/auth";
 import {auth, db} from "../firebase";
 import { doc, setDoc } from "firebase/firestore"; 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation'
 
 const SignUp = () => {
 
@@ -14,6 +15,7 @@ const SignUp = () => {
         name:'',
     });
     const { toast } = useToast()
+    const router = useRouter();
 
 
     const handleChange = (prop: string) => (event: { target: { value: any; }; }) => {
@@ -50,7 +52,8 @@ const SignUp = () => {
                         email: user.email,
                         uid: user.uid,
                         photo: user.photoURL
-                    });
+                    })
+                    router.replace('/')
                 }).catch((error) => {
                     const errorCode = error.code;
                     const errorMessage = error.message;
