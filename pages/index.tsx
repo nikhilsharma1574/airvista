@@ -7,6 +7,7 @@ const inter = Inter({ subsets: ['latin'] })
 import { onAuthStateChanged } from "firebase/auth";
 import {auth} from "../firebase";
 import { useRouter } from 'next/navigation'
+import Footer from '@/components/Footer'
 
 
 export default function Home() {
@@ -29,6 +30,7 @@ export default function Home() {
     <main className={`flex${inter.className}`}>
         <Header/>
         <Landing/>
+        <Footer/>
     </main>
   )
 }

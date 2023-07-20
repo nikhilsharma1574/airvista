@@ -11,111 +11,232 @@ import {Popover,PopoverContent,PopoverTrigger,} from "@/components/ui/popover"
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
 import { cn } from "@/lib/utils"
 import { useRef } from "react";
+import {db} from '../firebase.js'
+import { collection, doc, getDocs, setDoc, query} from "firebase/firestore"; 
+import { ToastAction } from "@/components/ui/toast"
+import { useToast } from "@/components/ui/use-toast";
 
 const Landing = () => {
+    
     const airlines = [
         {
             title: "Indigo",
-            value: "indigo",
             logo: "/assets/indigo.svg",
+            iata: "6E",
         },
         {
             title: "Air India",
-            value: "airindia",
             logo: "/assets/air_india.svg",
+            iata: "AIC",
         },
         {
             title: "Vistara",
-            value: "vistara",
             logo: "/assets/vistara.svg",
+            iata: "UK",
         },
         {
             title: "Akasa Air",
-            value: "asakaair",
             logo: "/assets/akasa.svg",
+            iata:"QP",
+
         },
     ];
-    // const handlePrintValue = () => {
-    //     if (flightNumRef.current) {
-    //         const inputValue = flightNumRef.current.value;
-    //         console.log(inputValue);
-    //     }
-    // };
+
     const [open, setOpen] = React.useState(false)
     const [open2, setOpen2] = React.useState(false)
     const [fromCity, setfromCity] = React.useState("");
     const [toCity, setToCity] = React.useState("");
-    const flightNumRef = useRef(null);
-    console.log(fromCity, toCity);
+    const [airlineName, setAirlineName] = React.useState("");
+    const [time, setTime] = React.useState("");
+    const [price, setPrice] = React.useState("");
+    const [flights, setFlights] = React.useState([]);
+    const [filteredflights, setFilteredFlights] = React.useState([]);
+    const [searchQuery, setSearchQuery] = React.useState("")
+    const { toast } = useToast()
+
+    console.log(filteredflights)
+
+    const getRandomFlightNo = async () => {
+        const min = 10000;
+        const max = 99999;
+        const rand = min + Math.random() * (max - min);
+        const selectedIata = airlines.find((airline) => airline.title === airlineName)?.iata
+
+        const flightNo = selectedIata + `${Math.round(rand)}`
+    
+        const collectionRef = collection(db, "flights");
+        const q = await getDocs(collectionRef);
+        const ids = q.docs.map((doc) => doc.id);
+        if (ids.includes(flightNo)) {
+            getRandomFlightNo();
+        }
+        return flightNo;
+    };
+    const handleChangeSearch = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+        setSearchQuery(e.target.value);
+    }
+    
+    const handleSearch = () => {
+        console.log(searchQuery)
+        
+        const filterArray = flights.filter(
+            // @ts-ignore
+            (el) => el.id.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+        setFilteredFlights(filterArray);
+
+        if (filterArray.length === 0) {
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "No Flights Found!",
+            })
+        }
+    }
+    const handleAddFlight = async(e : { preventDefault: () => void; } | undefined) => {
+        e?.preventDefault();
+        if(!fromCity || !toCity || !airlineName || !time || !price){
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Please Fill in all the Fields",
+            })
+        } else {
+            const FlightNo = await getRandomFlightNo();
+            const fromAirport = airports.find((airport) => airport.city === fromCity.replace(/\b\w/g, x => x.toUpperCase()))
+            const toAirport = airports.find((airport) => airport.city === toCity.replace(/\b\w/g, x => x.toUpperCase()))
+            const selectedFlightLogo = airlines.find((airline) => airline.title === airlineName)?.logo
+            setDoc(doc(db, "flights", FlightNo), {
+                airlineName: airlineName,
+                flightNumber: FlightNo, 
+                time: time, 
+                price: price,
+                seats: 60,
+                fromAirport:fromAirport,
+                toAirport:toAirport,
+                logo: selectedFlightLogo
+            })
+        }
+        
+    }
+
+    React.useEffect(() => {
+        const genRandomKey = async () => {
+            let arr:any = [];
+            const q = query(collection(db, "flights"));
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                arr.push({ id: doc.id, ...doc.data() });
+            });
+            setFlights(arr)
+        };        
+        genRandomKey();
+    },[]);
+
     return (
         <div className="bg-slate-100">
-        <main className="p-4 md:px-16 lg:max-w-6xl lg:mx-auto w-full h-screen flex ">
+        <main className="p-4 md:px-16 lg:max-w-6xl lg:mx-auto w-full h-full flex ">
             <div className="w-full">
-                <h1 className="text-3xl font-semibold">Admin Dashboard</h1>
-                <div className="w-full h-96 flex items-center justify-center flex-col gap-2">
-                    <p className="text-slate-500 text-sm">No Flights Added</p>
-                    <Dialog>
-                        <DialogTrigger>
-                            <Button className="bg-lime-500 hover:bg-lime-600">Add Flights</Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>Add Flight Deatails</DialogTitle>
-                                <DialogDescription>
-                                    <div className="w-full h-full grid grid-cols-1 gap-4 mt-4">
-                                        {/* airline */}
-                                        <Select>
-                                            <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Select Airline" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {
-                                                    airlines.map((airline, idx) => (
-                                                        <SelectItem key={idx} value={airline.value} > 
-                                                            <div className="flex gap-2 items-center">
-                                                                <Image src={airline.logo} alt={airline.title} width={44} height={44}/> {airline.title}
-                                                            </div>
-                                                        </SelectItem>
-                                                    ))
-                                                }
-                                            </SelectContent>
-                                        </Select>
-                                        {/* flight number */}
-                                        <div className="grid w-full max-w-sm items-center gap-1.5">
-                                            <Label htmlFor="flight_num" className="text-left">Flight Number</Label>
-                                            <Input type="text" id="flight_num" placeholder="Number"/>
-                                        </div>
-                                        {/* <div className="grid w-full max-w-sm items-center gap-1.5"> */}
-                                            {/* <label htmlFor="flight_num" className="text-left">Flight Number</label> */}
-                                            {/* <Input type="text" id="flight_num" placeholder="Number" ref={flightNumRef} onChange={handlePrintValue} /> */}
-                                        {/* </div> */}
-                                        {/* from */}
-                                        <Label htmlFor="from_city" className="text-left mb-0">From</Label>
-                                        <Popover open={open} onOpenChange={setOpen}>
-                                            <PopoverTrigger asChild>
-                                                <Button
-                                                variant="outline"
-                                                role="combobox"
-                                                aria-expanded={open}
-                                                className="w-full justify-between"
-                                                >
-                                                {fromCity
-                                                    ? airports.find((airport) => airport.city === fromCity.replace(/\b\w/g, x => x.toUpperCase()))?.city
-                                                    : "Select City"}
-                                                <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                                </Button>
-                                            </PopoverTrigger>
-                                            <PopoverContent className="w-full p-0">
-                                                <Command id="from_city">
-                                                    <CommandInput placeholder="Search City..." className="h-9" />
-                                                    <CommandEmpty>No city found.</CommandEmpty>
-                                                    <CommandGroup className="h-56  overflow-y-scroll">
+                <h1 className="text-3xl font-semibold mb-4">Admin Dashboard</h1>
+                <Dialog>
+                    <DialogTrigger>
+                        <Button className="bg-lime-500 hover:bg-lime-600">Add Flights</Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Add Flight Deatails</DialogTitle>
+                            <DialogDescription>
+                                <div className="w-full h-full grid grid-cols-1 gap-4 mt-4">
+                                    {/* airline */}
+                                    <Select onValueChange={(val: any) => {setAirlineName(val)}}>
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Select Airline" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {
+                                                airlines.map((airline, idx) => (
+                                                    <SelectItem key={idx} value={airline.title} > 
+                                                        <div className="flex gap-2 items-center">
+                                                            <Image src={airline.logo} alt={airline.title} width={44} height={44}/> {airline.title}
+                                                        </div>
+                                                    </SelectItem>
+                                                ))
+                                            }
+                                        </SelectContent>
+                                    </Select>
+                                    {/* from */}
+                                    <Label htmlFor="from_city" className="text-left mb-0">From</Label>
+                                    <Popover open={open} onOpenChange={setOpen}>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                            variant="outline"
+                                            role="combobox"
+                                            aria-expanded={open}
+                                            className="w-full justify-between"
+                                            >
+                                            {fromCity
+                                                ? airports.find((airport) => airport.city === fromCity.replace(/\b\w/g, x => x.toUpperCase()))?.city
+                                                : "Select City"}
+                                            <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-full p-0">
+                                            <Command id="from_city">
+                                                <CommandInput placeholder="Search City..." className="h-9" />
+                                                <CommandEmpty>No city found.</CommandEmpty>
+                                                <CommandGroup className="h-56  overflow-y-scroll">
+                                                    {airports.map((airport) => (
+                                                    <CommandItem
+                                                        key={airport.code}
+                                                        onSelect={(currentValue) => {
+                                                            setfromCity(currentValue === fromCity ? "" : currentValue)
+                                                            setOpen(false)
+                                                        }}
+                                                    >
+                                                        <p>
+                                                            {airport.city}
+                                                        </p>
+                                                        <CheckIcon
+                                                        className={cn(
+                                                            "ml-auto h-4 w-4",
+                                                            fromCity === airport.city ? "opacity-100" : "opacity-0"
+                                                        )}
+                                                        />
+                                                    </CommandItem>
+                                                    ))}
+                                                </CommandGroup>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
+                                    {/* to city */}
+                                    <Label htmlFor="to_city" className="text-left mb-0">To</Label>
+                                    <Popover open={open2} onOpenChange={setOpen2}>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                            variant="outline"
+                                            role="combobox"
+                                            aria-expanded={open}
+                                            className="w-full justify-between"
+                                            >
+                                            {toCity
+                                                ? airports.find((airport) => airport.city === toCity.replace(/\b\w/g, x => x.toUpperCase()))?.city
+                                                : "Select City"}
+                                            <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-full p-0">
+                                            <Command id="to_city">
+                                                <CommandInput placeholder="Search City..." className="h-9" />
+                                                <CommandEmpty>No city found.</CommandEmpty>
+                                                <CommandGroup >
+                                                    <div className="h-56 overflow-y-scroll">
                                                         {airports.map((airport) => (
                                                         <CommandItem
+                                                            className={`${airport.city === fromCity.replace(/\b\w/g, x => x.toUpperCase()) ? "hidden" : "block"}`}
                                                             key={airport.code}
                                                             onSelect={(currentValue) => {
-                                                                setfromCity(currentValue === fromCity ? "" : currentValue)
-                                                                setOpen(false)
+                                                                setToCity(currentValue === toCity ? "" : currentValue)
+                                                                setOpen2(false)
                                                             }}
                                                         >
                                                             <p>
@@ -124,114 +245,120 @@ const Landing = () => {
                                                             <CheckIcon
                                                             className={cn(
                                                                 "ml-auto h-4 w-4",
-                                                                fromCity === airport.city ? "opacity-100" : "opacity-0"
+                                                                toCity === airport.city ? "opacity-100" : "opacity-0"
                                                             )}
                                                             />
                                                         </CommandItem>
                                                         ))}
-                                                    </CommandGroup>
-                                                </Command>
-                                            </PopoverContent>
-                                        </Popover>
-                                        {/* to city */}
-                                        <Label htmlFor="to_city" className="text-left mb-0">To</Label>
-                                        <Popover open={open2} onOpenChange={setOpen2}>
-                                            <PopoverTrigger asChild>
-                                                <Button
-                                                variant="outline"
-                                                role="combobox"
-                                                aria-expanded={open}
-                                                className="w-full justify-between"
-                                                >
-                                                {toCity
-                                                    ? airports.find((airport) => airport.city === toCity.replace(/\b\w/g, x => x.toUpperCase()))?.city
-                                                    : "Select City"}
-                                                <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                                </Button>
-                                            </PopoverTrigger>
-                                            <Button className="bg-lime-500 hover:bg-lime-600">+ Add</Button>
-                                            <PopoverContent className="w-full p-0">
-                                                <Command id="to_city">
-                                                    <CommandInput placeholder="Search City..." className="h-9" />
-                                                    <CommandEmpty>No city found.</CommandEmpty>
-                                                    <CommandGroup >
-                                                        <div className="h-56 overflow-y-scroll">
-                                                            {airports.map((airport) => (
-                                                            <CommandItem
-                                                                className={`${airport.city === fromCity.replace(/\b\w/g, x => x.toUpperCase()) ? "hidden" : "block"}`}
-                                                                key={airport.code}
-                                                                onSelect={(currentValue) => {
-                                                                    setToCity(currentValue === toCity ? "" : currentValue)
-                                                                    setOpen2(false)
-                                                                }}
-                                                            >
-                                                                <p>
-                                                                    {airport.city}
-                                                                </p>
-                                                                <CheckIcon
-                                                                className={cn(
-                                                                    "ml-auto h-4 w-4",
-                                                                    toCity === airport.city ? "opacity-100" : "opacity-0"
-                                                                )}
-                                                                />
-                                                            </CommandItem>
-                                                            ))}
-                                                        </div>
-                                                    </CommandGroup>
-                                                </Command>
-                                            </PopoverContent>
-                                        </Popover>
-                                        <div></div>
-                                        <div></div>
-                                        <div></div>
+                                                    </div>
+                                                </CommandGroup>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
+                                    <div className="grid w-full items-center gap-1.5">
+                                        <Label htmlFor="time" className={"text-left"}>Time</Label>
+                                        <Input onChange={(text: any) => {setTime(text.target.value)}} type="time" id="time" placeholder="Time" />
                                     </div>
-                                </DialogDescription>
-                            </DialogHeader>
-                        </DialogContent>
-                    </Dialog>
-                    {/* data table */}
-                    
-<div className="relative overflow-x-auto">
-    <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th scope="col" className="px-6 py-3">
-                    Service provider
-                </th>
-                <th scope="col" className="px-6 py-3">
-                    From
-                </th>
-                <th scope="col" className="px-6 py-3">
-                    to
-                </th>
-                <th scope="col" className="px-6 py-3">
-                    Date
-                </th><th scope="col" className="px-6 py-3">
-                    Price
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                AIRLINE.LOGO AIRLINE.TITLE
-                </th>
-                <td className="px-6 py-4">
-                    Chennai
-                </td>
-                <td className="px-6 py-4">
-                    Mumbai
-                </td>
-                <td className="px-6 py-4">
-                    02-04-2023
-                </td><td className="px-6 py-4">
-                    4565
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
+                                    <div className="grid w-full max-w-sm items-center gap-1.5">
+                                        <Label htmlFor="price" className={"text-left"}>Price</Label>
+                                        <Input onChange={(text: any) => {setPrice(text.target.value)}} type="number" id="price" placeholder="Price" />
+                                    </div>
+                                    <Button onClick={handleAddFlight} className="bg-lime-500 hover:bg-lime-600">Add</Button>
+                                </div>
+                            </DialogDescription>
+                        </DialogHeader>
+                    </DialogContent>
+                </Dialog>
+                <div className="w-full h-full flex items-center justify-center flex-col gap-2">
+                    {
+                        flights.length === 0 ?
+                        <p className="text-slate-500 text-sm">No Flights Added</p>
+                        :
+                        <div className="w-full h-full mt-8">
+                            <div className="mb-8">
+                                <div className="flex w-full max-w-lg items-center space-x-2">
+                                    <Input onChange={handleChangeSearch} type="email" placeholder="Enter Flight No " />
+                                    <Button onClick={handleSearch} type="submit" className="bg-lime-500 hover:bg-lime-600">Search</Button>
+                                </div>
+                            </div>
+                            {
+                                filteredflights.length === 0 || searchQuery.length === 0 ?
+                                <>
+                                    {
+                                        flights.map((flight, idx) => (
+                                            <div key={idx} className={`w-full bg-slate-300/40 p-4 grid grid-cols-1 md:grid-cols-5 place-items-center rounded-lg shadow-md mb-4`}>
+                                                <div className="flex items-center gap-2 md:col-span-1">
+                                                    {/* @ts-ignore */}
+                                                    <Image src={flight.logo} alt={flight.airlineName} width={44} height={44}/>
+                                                    {/* @ts-ignore */}
+                                                    <p className="font-medium text-sm text-slate-500">{flight.flightNumber}</p>
+                                                </div>
+                                                <div className="grid grid-cols-3 gap-2 place-items-center md:col-span-3">
+                                                    <div className="">
+                                                        {/* @ts-ignore */}
+                                                        <h1 className="text-lg font-medium">{flight.fromAirport.city}</h1>
+                                                        {/* @ts-ignore */}
+                                                        <p className="font-medium text-sm text-slate-500">{flight.fromAirport.code}</p>
+                                                    </div>
+                                                    <div>
+                                                        {/* svg */}
+                                                        <Image src={'/assets/flight.svg'} alt={'logo'} width={2} height={2} className="w-40"/>
+                                                    </div>
+                                                    <div>
+                                                        {/* @ts-ignore */}
+                                                        <h1 className="text-lg font-medium">{flight.toAirport.city}</h1>
+                                                        {/* @ts-ignore */}
+                                                        <p className="font-medium text-sm text-slate-500">{flight.toAirport.code}</p>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    {/* @ts-ignore */}
+                                                    <h1 className="text-lg font-medium">{flight.time}</h1>
+                                                </div>
+                                            </div>
+                                        ))
+                                    }                                
+                                </>
+                                :
+                                <>
+                                    {
+                                         filteredflights.map((flight, idx) => (
+                                            <div key={idx} className={`w-full bg-slate-300/40 p-4 grid grid-cols-1 md:grid-cols-5 place-items-center rounded-lg shadow-md mb-4`}>
+                                                <div className="flex items-center gap-2 md:col-span-1">
+                                                    {/* @ts-ignore */}
+                                                    <Image src={flight.logo} alt={flight.airlineName} width={44} height={44}/>
+                                                    {/* @ts-ignore */}
+                                                    <p className="font-medium text-sm text-slate-500">{flight.flightNumber}</p>
+                                                </div>
+                                                <div className="grid grid-cols-3 gap-2 place-items-center md:col-span-3">
+                                                    <div className="">
+                                                        {/* @ts-ignore */}
+                                                        <h1 className="text-lg font-medium">{flight.fromAirport.city}</h1>
+                                                        {/* @ts-ignore */}
+                                                        <p className="font-medium text-sm text-slate-500">{flight.fromAirport.code}</p>
+                                                    </div>
+                                                    <div>
+                                                        {/* svg */}
+                                                        <Image src={'/assets/flight.svg'} alt={'logo'} width={2} height={2} className="w-40"/>
+                                                    </div>
+                                                    <div>
+                                                        {/* @ts-ignore */}
+                                                        <h1 className="text-lg font-medium">{flight.toAirport.city}</h1>
+                                                        {/* @ts-ignore */}
+                                                        <p className="font-medium text-sm text-slate-500">{flight.toAirport.code}</p>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    {/* @ts-ignore */}
+                                                    <h1 className="text-lg font-medium">{flight.time}</h1>
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                </>
+                            }
+                        </div>
+                    }
                 </div>
             </div>
         </main>
@@ -239,4 +366,4 @@ const Landing = () => {
     )
 }
 
-export default Landing
+export default Landing;
