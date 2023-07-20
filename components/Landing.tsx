@@ -76,6 +76,9 @@ const Landing = () => {
                         }}/></span></h1>
                 <p className="text-sm lg:text-base lg:max-w-3xl lg:mx-auto text-slate-500 md:text-center">Airvista offers a wide variety of flights to choose from, all at competitive prices. Whether you're looking for a last-minute getaway or planning your dream vacation, we have the perfect flight for you.</p>
                 <div className="flex flex-col h-fit justify-center">
+                            <div className='mt-10 flex justify-center font-semibold lg:text-[30px] md:text-[30px]  text-[20px]'>
+                                Search Flight Now !!
+                            </div>
                     <div className="grid grid-cols-1 lg:grid-cols-7  w-full rounded-lg p-4">
                         <div className="flex gap-2 border-b lg:border-none rounded-b-none rounded-t-lg lg:rounded-l-lg lg:rounded-r-none md:rounded-r-none items-center bg-white  p-4 col-span-4 md:col-span-1 lg:col-span-2">
                             <Image src={"/assets/globe.webp"} alt="My Image" width={30} height={30} />
