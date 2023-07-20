@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input"
 import { CalendarIcon } from "@radix-ui/react-icons"
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
-import { collection, doc, getDocs, setDoc, query,where} from "firebase/firestore"; 
+import { collection, doc, getDocs, setDoc, query, where, onSnapshot} from "firebase/firestore"; 
 import {db} from '../firebase.js'
 
 const Landing = () => {
@@ -29,23 +29,22 @@ const Landing = () => {
     const [toCity, setToCity] = useState("");
     const [flights, setFlights] = useState([]);
 
-    const handleSearch = () => {
-        // console.log(flights,fromCity,toCity,date)
-        getFlights();
+    const handleSearch = async () => {
+        const unsub = onSnapshot(
+        query(collection(db, "flights"), where("fromCity", "==", fromCity.replace(/\b\w/g, x => x.toUpperCase())) && where("toCity", "==", toCity.replace(/\b\w/g, x => x.toUpperCase()) )),
+        (collectionRef) => {
+            let arr:any = [];
+            collectionRef.forEach((doc) => {
+                arr.push({ ...doc.data(), id: doc.id });
+            });
+            setFlights(arr);
+        }
+        );
     }
 
     console.log(flights)
 
-    const getFlights = async () => {
-        let arr:any = [];
-        console.log(fromCity.replace(/\b\w/g, x => x.toUpperCase()))
-        const q = query(collection(db, "flights"), where("fromCity", "==", fromCity.replace(/\b\w/g, x => x.toUpperCase())) && where("toCity", "==", toCity.replace(/\b\w/g, x => x.toUpperCase()) ));
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-            arr.push({ id: doc.id, ...doc.data() });
-        });
-        setFlights(arr)
-    };        
+
 
     return (
         <div className="bg-slate-100">
@@ -194,7 +193,15 @@ const Landing = () => {
                     </div>
                 </div>
             </div>
-            
+            <div>
+                {
+                    flights.map((flight, idx) => (
+                        <div key={idx}>
+                            <h1>{flight.flightNumber}</h1>
+                        </div>
+                    ))
+                }
+            </div>
         </main>
         </div>
     )
