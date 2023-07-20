@@ -261,7 +261,7 @@ const Landing = () => {
                                         <Label htmlFor="time" className={"text-left"}>Time</Label>
                                         <Input onChange={(text: any) => {setTime(text.target.value)}} type="time" id="time" placeholder="Time" />
                                     </div>
-                                    <div className="grid w-full max-w-sm items-center gap-1.5">
+                                    <div className="grid w-full items-center gap-1.5">
                                         <Label htmlFor="price" className={"text-left"}>Price</Label>
                                         <Input onChange={(text: any) => {setPrice(text.target.value)}} type="number" id="price" placeholder="Price" />
                                     </div>
