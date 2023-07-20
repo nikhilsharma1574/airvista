@@ -136,7 +136,7 @@ const Landing = () => {
     },[]);
 
     return (
-        <div className="bg-slate-100 h-full">
+        <div className="h-full">
         <main className="p-4 md:px-16 lg:max-w-6xl lg:mx-auto w-full  flex ">
             <div className="w-full">
                 <h1 className="text-3xl font-semibold mb-4">Admin Dashboard</h1>

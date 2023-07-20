@@ -27,7 +27,7 @@ export default function Home() {
   },[])
 
   return (
-    <main className={`flex${inter.className}`}>
+    <main className={`w-full h-fit min-h-screen bg-slate-100 ${inter.className}`}>
         <Header/>
         <Landing/>
     </main>
