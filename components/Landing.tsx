@@ -28,7 +28,7 @@ const Landing = () => {
     const [fromCity, setfromCity] = useState("");
     const [toCity, setToCity] = useState("");
     const [flights, setFlights] = useState([]);
- 
+
     const handleSearch = () => {
         // console.log(flights,fromCity,toCity,date)
         getFlights();
