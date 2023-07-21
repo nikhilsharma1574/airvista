@@ -78,7 +78,7 @@ return (
             <span className=" h-fit w-fit bg-[url('/underline.svg')] bg-bottom bg-no-repeat">
             AIR<span className="text-lime-500"> VISTA</span>
             </span>! Your Ultimate Online Flight Ticket Booking</h1>
-        <p className='text-slate-500 text-justify mt-4 text-base'>Enter your travel information, such as your departure and arrival cities, dates of travel, and number of passengers.Select your preferred airline and class of travel.Compare prices and select the flight that best meets your needs.Enter your contact information and credit card details to complete your booking.That's it! You've just booked your flight with our website. We hope you enjoy your trip!</p>
+        <p className='text-slate-500 text-justify mt-4 text-base'>Enter your travel information, such as your departure and arrival cities, dates of travel, and number of passengers.Select your preferred airline and class of travel.Compare prices and select the flight that best meets your needs.Enter your contact information and credit card details to complete your booking.That&apos;s it! You&apos;ve just booked your flight with our website. We hope you enjoy your trip!</p>
         </div>
     </div>
     <div className='lg:w-1/2 p-4'>

@@ -74,7 +74,7 @@ const Landing = () => {
                             autoStart: true,
                             loop: true,
                         }}/></span></h1>
-                <p className="text-sm lg:text-base lg:max-w-3xl lg:mx-auto text-slate-500 md:text-center">Airvista offers a wide variety of flights to choose from, all at competitive prices. Whether you're looking for a last-minute getaway or planning your dream vacation, we have the perfect flight for you.</p>
+                <p className="text-sm lg:text-base lg:max-w-3xl lg:mx-auto text-slate-500 md:text-center">Airvista offers a wide variety of flights to choose from, all at competitive prices. Whether you&apos;re looking for a last-minute getaway or planning your dream vacation, we have the perfect flight for you.</p>
                 <div className="flex flex-col h-fit justify-center">
                             <div className='mt-10 flex justify-center font-semibold lg:text-[30px] md:text-[30px]  text-[20px]'>
                                 Search Flight Now !!

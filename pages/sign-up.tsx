@@ -82,7 +82,7 @@ const SignUp = () => {
 Select your preferred airline and class of travel.
 Compare prices and select the flight that best meets your needs.
 Enter your contact information and credit card details to complete your booking.
-That's it! You've just booked your flight with our website. We hope you enjoy your trip!</p>                    
+That&apos;s it! You&apos;ve just booked your flight with our website. We hope you enjoy your trip!</p>                    
                 </div>
             </div>
             <div className='lg:w-1/2 p-4'>
