@@ -53,7 +53,9 @@ const Header = () => {
                 <a href="#contact" className="text-sm text-slate-500 hover:text-slate-800 cursor-pointer transition-all duration-300 font-medium">Contact</a>
             </div>
             <div className="flex items-center gap-4">
-                <button className="py-2 px-4 text-sm outline-none rounded cursor-pointer hover:text-slate-800 hover:bg-blue-500/10 transition-all duration-300 text-slate-500 font-medium">Admin Login</button>
+                <Link href="https://airvista-admin.vercel.app">
+                    <button className="py-2 px-4 text-sm outline-none rounded cursor-pointer hover:text-slate-800 hover:bg-blue-500/10 transition-all duration-300 text-slate-500 font-medium">Admin Login</button>
+                </Link>
                 {
                     user ? 
                     <button onClick={handleSignOut} className="py-2 px-4 text-sm bg-red-500 hover:bg-red-600 transition-all duration-300 rounded cursor-pointer text-white font-medium">Logout</button>
