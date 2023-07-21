@@ -16,8 +16,9 @@ const FlightNumber = () => {
     const [count, setCount] = useState(0);
     const [checkCount,setCheckCount] = useState(false);
     const [checkUser,setCheckUser] = useState(false);
-    const [saveUid,setSaveUid] = useState("")
     const flightNumber  = router.query.flightNumber;
+    // @ts-ignore
+    const a = parseInt(flights.price)+150+200
     
     
     const handleBook =  () => {
@@ -25,9 +26,6 @@ const FlightNumber = () => {
             if (user) {
                 const uid = user.uid;
                 console.log(uid)
-                setSaveUid(uid)
-                
-
                     const docRef = doc(db, "users", uid);
                     const docSnap = await getDoc(docRef);
                     if (docSnap.exists()) {
@@ -155,11 +153,12 @@ const FlightNumber = () => {
                                 <div>Total</div>
                             </div>
                             <div className='grid grid-row-4'>
-                                {/* {200+150+{parseInt(flights.price);}} */}
+                                {/* @ts-ignore */} 
                                 <div>: {flights.price}</div>
                                 <div>:  200</div>
                                 <div>: 150</div>
-                                <div>: {200+150}</div>
+                                {/* @ts-ignore */} 
+                                <div className='font-medium'>: {a}</div>
                             </div>
                         </div>
                 </div>
