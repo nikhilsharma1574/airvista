@@ -14,10 +14,7 @@ const Login = () => {
     const provider = new GoogleAuthProvider();
     const router = useRouter()
     const { toast } = useToast()
-    // const adminCred = {
-    //     email : "nikhilsharma1574@gmail.com",
-    //     password: "123456789",
-    // }
+    
 
     
     const [values, setValues] = useState({
