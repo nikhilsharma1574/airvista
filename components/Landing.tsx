@@ -12,7 +12,7 @@ import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
 import { cn } from "@/lib/utils"
 import { useRef } from "react";
 import {db} from '../firebase.js'
-import { collection, doc, getDocs, setDoc, query, onSnapshot} from "firebase/firestore"; 
+import { collection, doc, getDocs, setDoc, query, onSnapshot,deleteDoc} from "firebase/firestore"; 
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast";
 
@@ -120,6 +120,14 @@ const Landing = () => {
             })
         }
         
+    }
+
+    const handleDelte = (flightNumber: any) => {
+        const docRef = doc(db, "flights", flightNumber);
+        deleteDoc(docRef)
+        .then(() => {
+            console.log("Deleted");
+        }).catch((e)=> console.log(e))
     }
 
     React.useEffect(() => {
@@ -295,7 +303,7 @@ const Landing = () => {
                                                     {/* @ts-ignore */}
                                                     <p className="font-medium text-sm text-slate-500">{flight.flightNumber}</p>
                                                 </div>
-                                                <div className="grid grid-cols-3 gap-2 place-items-center md:col-span-3">
+                                                <div className="grid grid-cols-3 gap-2 place-items-center md:col-span-2">
                                                     <div className="">
                                                         {/* @ts-ignore */}
                                                         <h1 className="text-lg font-medium">{flight.fromAirport.city}</h1>
@@ -316,6 +324,10 @@ const Landing = () => {
                                                 <div>
                                                     {/* @ts-ignore */}
                                                     <h1 className="text-lg font-medium">{flight.time}</h1>
+                                                </div>
+                                                <div>
+                                                    {/* @ts-ignore */}
+                                                    <Image onClick={() => handleDelte(flight.flightNumber)} src={'/assets/bin.png'} alt={'Delete Flight'} width={22} height={22}/>
                                                 </div>
                                             </div>
                                         ))
@@ -328,11 +340,11 @@ const Landing = () => {
                                             <div key={idx} className={`w-full bg-slate-300/40 p-4 grid grid-cols-1 md:grid-cols-5 place-items-center rounded-lg shadow-md mb-4`}>
                                                 <div className="flex items-center gap-2 md:col-span-1">
                                                     {/* @ts-ignore */}
-                                                    <Image src={flight.logo} alt={flight.airlineName} width={44} height={44}/>
+                                                    <Image src={flight.logo} alt={flight.airlineName} width={20} height={20}/>
                                                     {/* @ts-ignore */}
                                                     <p className="font-medium text-sm text-slate-500">{flight.flightNumber}</p>
                                                 </div>
-                                                <div className="grid grid-cols-3 gap-2 place-items-center md:col-span-3">
+                                                <div className="grid grid-cols-3 gap-2 place-items-center md:col-span-2">
                                                     <div className="">
                                                         {/* @ts-ignore */}
                                                         <h1 className="text-lg font-medium">{flight.fromAirport.city}</h1>
@@ -353,6 +365,10 @@ const Landing = () => {
                                                 <div>
                                                     {/* @ts-ignore */}
                                                     <h1 className="text-lg font-medium">{flight.time}</h1>
+                                                </div>
+                                                <div>
+                                                    {/* @ts-ignore */}
+                                                    <Image onClick={() => handleDelte(flight.flightNumber)} src={'/assets/bin.png'} alt={'Delete Flight'} width={22} height={22}/>
                                                 </div>
                                             </div>
                                         ))
