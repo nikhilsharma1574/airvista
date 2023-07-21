@@ -63,7 +63,7 @@ const FlightNumber = () => {
                 }
                 );
         }
-    }, [router.isReady,flightNumber])
+    }, [router.isReady,router.query.flightNumber])
     useEffect(() => {
         const ff = async () => {
             onAuthStateChanged(auth, async (user) => {
@@ -79,7 +79,7 @@ const FlightNumber = () => {
             });
         }
         ff();
-    },[flightNumber])
+    },[router.query.flightNumber])
     // @ts-ignore
     useEffect(() => {
         if(router.isReady){
@@ -96,7 +96,7 @@ const FlightNumber = () => {
             gg();
 
         }
-    }, [router.isReady,flightNumber])
+    }, [router.isReady,router.query.flightNumber])
     
     
     return (
