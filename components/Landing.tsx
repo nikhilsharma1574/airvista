@@ -11,7 +11,8 @@ import {Popover,PopoverContent,PopoverTrigger,} from "@/components/ui/popover"
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
 import { cn } from "@/lib/utils"
 import { useRef } from "react";
-import {db} from '../firebase.js'
+import {db} from '../firebase.js';
+import { useRouter } from 'next/navigation'
 import { collection, doc, getDocs, setDoc, query, onSnapshot,deleteDoc} from "firebase/firestore"; 
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from "@/components/ui/use-toast";
@@ -53,6 +54,7 @@ const Landing = () => {
     const [filteredflights, setFilteredFlights] = React.useState([]);
     const [searchQuery, setSearchQuery] = React.useState("")
     const { toast } = useToast()
+    const router = useRouter();
 
     console.log(filteredflights)
 
@@ -126,10 +128,18 @@ const Landing = () => {
         const docRef = doc(db, "flights", flightNumber);
         deleteDoc(docRef)
         .then(() => {
-            console.log("Deleted");
+            toast({
+                variant: "destructive",
+                title: "Flight Deleted",
+                description: "The Flight is Deleted Successfully",
+            })
         }).catch((e)=> console.log(e))
     }
 
+    
+    const handleViewBooking = (flightNumber: any) => {
+        router.push(`${flightNumber}`);
+    }
     React.useEffect(() => {
         const unsub = onSnapshot(
             query(collection(db, "flights")),
@@ -296,7 +306,7 @@ const Landing = () => {
                                 <>
                                     {
                                         flights.map((flight, idx) => (
-                                            <div key={idx} className={`w-full bg-slate-300/40 p-4 grid grid-cols-1 md:grid-cols-5 place-items-center rounded-lg shadow-md mb-4`}>
+                                            <div onClick={handleViewBooking} key={idx} className={`w-full bg-slate-300/40 p-4 grid grid-cols-1 md:grid-cols-6 place-items-center rounded-lg shadow-md mb-4`}>
                                                 <div className="flex items-center gap-2 md:col-span-1">
                                                     {/* @ts-ignore */}
                                                     <Image src={flight.logo} alt={flight.airlineName} width={44} height={44}/>
@@ -327,6 +337,10 @@ const Landing = () => {
                                                 </div>
                                                 <div>
                                                     {/* @ts-ignore */}
+                                                    <Button onClick={() => handleViewBooking(flight.flightNumber)} className="bg-lime-500 hover:bg-lime-600">View Bookings</Button>
+                                                </div>
+                                                <div>
+                                                    {/* @ts-ignore */}
                                                     <Image onClick={() => handleDelte(flight.flightNumber)} src={'/assets/bin.png'} alt={'Delete Flight'} width={22} height={22}/>
                                                 </div>
                                             </div>
@@ -337,7 +351,7 @@ const Landing = () => {
                                 <>
                                     {
                                         filteredflights.map((flight, idx) => (
-                                            <div key={idx} className={`w-full bg-slate-300/40 p-4 grid grid-cols-1 md:grid-cols-5 place-items-center rounded-lg shadow-md mb-4`}>
+                                            <div onClick={handleViewBooking} key={idx} className={`w-full bg-slate-300/40 p-4 grid grid-cols-1 md:grid-cols-6 place-items-center rounded-lg shadow-md mb-4`}>
                                                 <div className="flex items-center gap-2 md:col-span-1">
                                                     {/* @ts-ignore */}
                                                     <Image src={flight.logo} alt={flight.airlineName} width={20} height={20}/>
@@ -365,6 +379,10 @@ const Landing = () => {
                                                 <div>
                                                     {/* @ts-ignore */}
                                                     <h1 className="text-lg font-medium">{flight.time}</h1>
+                                                </div>
+                                                <div>
+                                                    {/* @ts-ignore */}
+                                                    <Button onClick={() => handleViewBooking(flight.flightNumber)} className="bg-lime-500 hover:bg-lime-600">View Bookings</Button>
                                                 </div>
                                                 <div>
                                                     {/* @ts-ignore */}
