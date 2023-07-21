@@ -64,7 +64,7 @@ const Landing = () => {
         <div className="bg-slate-100">
         <main className="p-4 py-12 md:px-16 lg:max-w-6xl lg:mx-auto text-left w-full h-full flex justify-center items-center">
             <div className="flex flex-col gap-4 relative">
-                <div data-aos="fade-up" className="flex items-center w-full justify-center">
+                <div  className="flex items-center w-full justify-center">
                     <Image className="mt-12" src={"/assets/landing_page_logo.png"} height={500} width={500} alt="image"/>
                 </div>
                 <h1 className="text-4xl lg:text-6xl lg:leading-tight font-bold md:text-center">Book your flight today, <span className="text-lime-500"> fly </span> away <span className="text-lime-500"><br className="md:hidden"/>
